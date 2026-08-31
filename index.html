@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشروع ريم الجزيرة | المنصة التفاعلية</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root { --primary: #1b4332; --accent: #d4af37; --bg: #f8f9fa; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
+        .header { text-align: center; background: var(--primary); color: white; padding: 30px 20px; border-radius: 16px; margin-bottom: 25px; }
+        .header h1 { margin: 0; color: var(--accent); font-size: 28px; }
+        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        label { display: block; margin: 10px 0 5px; font-weight: bold; }
+        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
+        .stat { font-size: 24px; font-weight: bold; color: var(--primary); margin-top: 5px; }
+        .btn { display: inline-block; background: var(--accent); color: #000; padding: 12px 24px; border-radius: 8px; font-weight: bold; text-decoration: none; text-align: center; width: 100%; box-sizing: border-box; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>ريم الجزيرة للمواشي</h1>
+        <p>لوحة التحكم وحاسبة الجدوى التفاعلية</p>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h3>🧮 مدخلات التكاليف (3 رؤوس)</h3>
+            <label>سعر شراء الرأس (ريال):</label>
+            <input type="number" id="buyPrice" value="800" oninput="calculate()">
+            
+            <label>تكلفة التغذية للرأس شهرياً (ريال):</label>
+            <input type="number" id="feedPrice" value="120" oninput="calculate()">
+
+            <label>سعر البيع المتوقع للرأس (ريال):</label>
+            <input type="number" id="sellPrice" value="1600" oninput="calculate()">
+        </div>
+
+        <div class="card">
+            <h3>📊 النتائج التقديرية (3 أشهر)</h3>
+            <p>إجمالي تكلفة الشراء: <span class="stat" id="totalBuy">2400 ريال</span></p>
+            <p>إجمالي تكلفة العلف: <span class="stat" id="totalFeed">1080 ريال</span></p>
+            <p>إجمالي المبيعات: <span class="stat" id="totalSales">4800 ريال</span></p>
+            <hr>
+            <p>صافي الربح المتوقع: <span class="stat" style="color: #2e7d32;" id="netProfit">1320 ريال</span></p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>📍 مراحل مشروع ريم الجزيرة</h3>
+        <ul>
+            <li><b>المرحلة الأولى:</b> شراء 3 رؤوس للتسمين المباشر وتجربة التغذية.</li>
+            <li><b>المرحلة الثانية:</b> استخراج الترخيص الرسمي وإكمال السجل التجاري.</li>
+            <li><b>المرحلة الثالثة:</b> إطلاق تطبيق ومتجر ريم الجزيرة للبيع والتوصيل.</li>
+        </ul>
+    </div>
+
+    <script>
+        function calculate() {
+            let buy = parseFloat(document.getElementById('buyPrice').value) || 0;
+            let feed = parseFloat(document.getElementById('feedPrice').value) || 0;
+            let sell = parseFloat(document.getElementById('sellPrice').value) || 0;
+
+            let totalBuyCost = buy * 3;
+            let totalFeedCost = feed * 3 * 3; // 3 أشهر
+            let totalSalesVal = sell * 3;
+            let profit = totalSalesVal - (totalBuyCost + totalFeedCost);
+
+            document.getElementById('totalBuy').innerText = totalBuyCost + " ريال";
+            document.getElementById('totalFeed').innerText = totalFeedCost + " ريال";
+            document.getElementById('totalSales').innerText = totalSalesVal + " ريال";
+            document.getElementById('netProfit').innerText = profit + " ريال";
+        }
+    </script>
+</body>
+</html>
