@@ -3,76 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مشروع ريم الجزيرة | المنصة التفاعلية</title>
+    <title>منصة ريم الجزيرة للمواشي | الداش بورد التفاعلي</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root { --primary: #1b4332; --accent: #d4af37; --bg: #f8f9fa; }
-        body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
-        .header { text-align: center; background: var(--primary); color: white; padding: 30px 20px; border-radius: 16px; margin-bottom: 25px; }
-        .header h1 { margin: 0; color: var(--accent); font-size: 28px; }
-        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        label { display: block; margin: 10px 0 5px; font-weight: bold; }
-        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
-        .stat { font-size: 24px; font-weight: bold; color: var(--primary); margin-top: 5px; }
-        .btn { display: inline-block; background: var(--accent); color: #000; padding: 12px 24px; border-radius: 8px; font-weight: bold; text-decoration: none; text-align: center; width: 100%; box-sizing: border-box; margin-top: 15px; }
+        :root { --primary: #1b4332; --accent: #d4af37; --bg: #f4f6f8; --card: #ffffff; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #2c3e50; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        .header { text-align: center; background: linear-gradient(135deg, #1b4332, #2d6a4f); color: white; padding: 35px 20px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .header h1 { margin: 0 0 10px 0; color: var(--accent); font-size: 32px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .card { background: var(--card); padding: 22px; border-radius: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border: 1px solid #e9ecef; }
+        .card h3 { margin-top: 0; color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 8px; display: inline-block; }
+        label { display: block; margin: 12px 0 6px; font-weight: 600; font-size: 14px; }
+        input, select { width: 100%; padding: 11px; border: 1px solid #ced4da; border-radius: 8px; box-sizing: border-box; font-size: 15px; }
+        .stat-box { background: #e8f5e9; padding: 12px; border-radius: 8px; margin-top: 10px; text-align: center; }
+        .stat { font-size: 22px; font-weight: bold; color: var(--primary); display: block; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #dee2e6; padding: 10px; text-align: center; font-size: 14px; }
+        th { background: #f8f9fa; color: var(--primary); }
+        .flashcard { background: #fff3cd; border-right: 5px solid var(--accent); padding: 12px; margin-bottom: 10px; border-radius: 4px; }
     </style>
 </head>
 <body>
 
+<div class="container">
     <div class="header">
-        <h1>ريم الجزيرة للمواشي</h1>
-        <p>لوحة التحكم وحاسبة الجدوى التفاعلية</p>
+        <h1>ريم الجزيرة للمواشي 🌿</h1>
+        <p>المنصة التفاعلية الشاملة - دراسة الجدوى والبرنامج التشغيلي</p>
     </div>
 
+    <!-- 1. الحاسبة التفاعلية -->
     <div class="grid">
         <div class="card">
-            <h3>🧮 مدخلات التكاليف (3 رؤوس)</h3>
-            <label>سعر شراء الرأس (ريال):</label>
-            <input type="number" id="buyPrice" value="800" oninput="calculate()">
-            
-            <label>تكلفة التغذية للرأس شهرياً (ريال):</label>
-            <input type="number" id="feedPrice" value="120" oninput="calculate()">
+            <h3>🧮 حاسبة الجدوى والتوسع</h3>
+            <label>عدد الرؤوس:</label>
+            <input type="number" id="headCount" value="3" oninput="updateDashboard()">
 
-            <label>سعر البيع المتوقع للرأس (ريال):</label>
-            <input type="number" id="sellPrice" value="1600" oninput="calculate()">
+            <label>سعر شراء الرأس (ريال):</label>
+            <input type="number" id="buyPrice" value="800" oninput="updateDashboard()">
+            
+            <label>تكلفة التغذية شهرياً/رأس (ريال):</label>
+            <input type="number" id="feedPrice" value="120" oninput="updateDashboard()">
+
+            <label>سعر البيع المتوقع/رأس (ريال):</label>
+            <input type="number" id="sellPrice" value="1600" oninput="updateDashboard()">
         </div>
 
         <div class="card">
-            <h3>📊 النتائج التقديرية (3 أشهر)</h3>
-            <p>إجمالي تكلفة الشراء: <span class="stat" id="totalBuy">2400 ريال</span></p>
-            <p>إجمالي تكلفة العلف: <span class="stat" id="totalFeed">1080 ريال</span></p>
-            <p>إجمالي المبيعات: <span class="stat" id="totalSales">4800 ريال</span></p>
-            <hr>
-            <p>صافي الربح المتوقع: <span class="stat" style="color: #2e7d32;" id="netProfit">1320 ريال</span></p>
+            <h3>📊 النتائج المالية التقديرية (3 أشهر)</h3>
+            <p>إجمالي تكلفة الشراء: <span class="stat" id="totalBuy">2,400 ريال</span></p>
+            <p>إجمالي العلف والتشغيل: <span class="stat" id="totalFeed">1,080 ريال</span></p>
+            <p>إجمالي المبيعات المتوقعة: <span class="stat" id="totalSales">4,800 ريال</span></p>
+            <div class="stat-box">
+                <small>صافي الربح المتوقع</small>
+                <span class="stat" style="color: #2e7d32;" id="netProfit">1,320 ريال</span>
+            </div>
         </div>
     </div>
 
+    <!-- 2. الرسم البياني للنمو -->
     <div class="card">
-        <h3>📍 مراحل مشروع ريم الجزيرة</h3>
-        <ul>
-            <li><b>المرحلة الأولى:</b> شراء 3 رؤوس للتسمين المباشر وتجربة التغذية.</li>
-            <li><b>المرحلة الثانية:</b> استخراج الترخيص الرسمي وإكمال السجل التجاري.</li>
-            <li><b>المرحلة الثالثة:</b> إطلاق تطبيق ومتجر ريم الجزيرة للبيع والتوصيل.</li>
-        </ul>
+        <h3>📈 منحنى نمو الوزن واستهلاك العلف (90 يوماً)</h3>
+        <canvas id="growthChart" height="100"></canvas>
     </div>
 
-    <script>
-        function calculate() {
-            let buy = parseFloat(document.getElementById('buyPrice').value) || 0;
-            let feed = parseFloat(document.getElementById('feedPrice').value) || 0;
-            let sell = parseFloat(document.getElementById('sellPrice').value) || 0;
+    <!-- 3. جدول التغذية -->
+    <div class="card">
+        <h3>🥗 برنامج التغذية اليومي والمراحل</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>المرحلة</th>
+                    <th>المدة</th>
+                    <th>العلف المركّز/يوم</th>
+                    <th>العلف الخشن/يوم</th>
+                    <th>الوزن المستهدف</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>1. التأقلم والتأسيس</b></td>
+                    <td>أيام 1 - 20</td>
+                    <td>400 - 600 جرام</td>
+                    <td>300 - 400 جرام (برسيم/رودس)</td>
+                    <td>22 - 27 كجم</td>
+                </tr>
+                <tr>
+                    <td><b>2. النمو السريع</b></td>
+                    <td>أيام 21 - 60</td>
+                    <td>700 - 900 جرام</td>
+                    <td>200 - 300 جرام</td>
+                    <td>28 - 36 كجم</td>
+                </tr>
+                <tr>
+                    <td><b>3. التسمين النهائي</b></td>
+                    <td>أيام 61 - 90</td>
+                    <td>1,000 - 1,250 جرام</td>
+                    <td>150 - 200 جرام</td>
+                    <td>37 - 45 كجم</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-            let totalBuyCost = buy * 3;
-            let totalFeedCost = feed * 3 * 3; // 3 أشهر
-            let totalSalesVal = sell * 3;
-            let profit = totalSalesVal - (totalBuyCost + totalFeedCost);
+    <!-- 4. دليل الأماكن بالشرقية والبطاقات -->
+    <div class="grid">
+        <div class="card">
+            <h3>📍 أسواق وأماكن الماشية بالشرقية</h3>
+            <ul>
+                <li><b>سوق المواشي المركزي بالدمام (غرب الدمام):</b> الشراء والأعلاف جملة.</li>
+                <li><b>سوق حفر الباطن:</b> التوريد المباشر لأفضل سلالات النعيمي.</li>
+                <li><b>سوق الأحساء المركزي:</b> متابعة أسعار الحلال والأعلاف الخشنة.</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>💡 إرشادات وقائية سريعة</h3>
+            <div class="flashcard">
+                <b>مياه الشرب:</b> يستهلك الخروف 3-6 لتر ماء نظيف يومياً للوقاية من حصوات الكلى.
+            </div>
+            <div class="flashcard">
+                <b>مساحة المعالف:</b> تخصيص 30-35 سم لكل خروف لمنع المزاحمة.
+            </div>
+        </div>
+    </div>
 
-            document.getElementById('totalBuy').innerText = totalBuyCost + " ريال";
-            document.getElementById('totalFeed').innerText = totalFeedCost + " ريال";
-            document.getElementById('totalSales').innerText = totalSalesVal + " ريال";
-            document.getElementById('netProfit').innerText = profit + " ريال";
-        }
-    </script>
+</div>
+
+<script>
+    let chart;
+
+    function initChart() {
+        const ctx = document.getElementById('growthChart').getContext('2d');
+        chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['بداية المشروع', 'اليوم 20', 'اليوم 40', 'اليوم 60', 'اليوم 90 (البيع)'],
+                datasets: [{
+                    label: 'متوسط وزن الخروف (كجم)',
+                    data: [23, 27, 32, 37, 45],
+                    borderColor: '#1b4332',
+                    backgroundColor: 'rgba(27, 67, 50, 0.1)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: { responsive: true }
+        });
+    }
+
+    function updateDashboard() {
+        let count = parseFloat(document.getElementById('headCount').value) || 0;
+        let buy = parseFloat(document.getElementById('buyPrice').value) || 0;
+        let feed = parseFloat(document.getElementById('feedPrice').value) || 0;
+        let sell = parseFloat(document.getElementById('sellPrice').value) || 0;
+
+        let totalBuyCost = buy * count;
+        let totalFeedCost = feed * count * 3;
+        let totalSalesVal = sell * count;
+        let profit = totalSalesVal - (totalBuyCost + totalFeedCost);
+
+        document.getElementById('totalBuy').innerText = totalBuyCost.toLocaleString() + " ريال";
+        document.getElementById('totalFeed').innerText = totalFeedCost.toLocaleString() + " ريال";
+        document.getElementById('totalSales').innerText = totalSalesVal.toLocaleString() + " ريال";
+        document.getElementById('netProfit').innerText = profit.toLocaleString() + " ريال";
+    }
+
+    window.onload = function() {
+        initChart();
+        updateDashboard();
+    };
+</script>
+
 </body>
 </html>
